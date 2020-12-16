@@ -9,10 +9,28 @@ public class PlayerController : MonoBehaviour
     float moveHorizontal;
     float moveVertical;
     private Vector2 moveDirection;
+    Vector3 mousePos;
+    private Camera cam;
+    Vector2 lookDir;
 
+    void Start()
+    {
+        cam = GameObject.Find("MainCamera").GetComponent<Camera>();
+    }
+    
     void Update()
     {
+        mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+       
         MovementInputs();
+    }
+
+    void FixedUpdate()
+    {
+        lookDir.x = mousePos.x-rb2d.position.x;
+        lookDir.y = mousePos.y - rb2d.position.y;
+        float angle = Mathf.Atan2(lookDir.y,lookDir.x)*Mathf.Rad2Deg -180f;
+        rb2d.rotation = angle;
     }
 
     void MovementInputs()

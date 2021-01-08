@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemiesAI : MonoBehaviour
 {
@@ -8,12 +9,13 @@ public class EnemiesAI : MonoBehaviour
     Transform tr;
 
     // Private global variables
-    private float MAX_WANDER_SPEED = 2;
-    private float MAX_CHASING_SPEED = 5;
-    private float WANDER_RING_RADIUS = 10;
+    private float WANDER_RING_RADIUS = 3;
+    private NavMeshAgent agent;
+    private NavMeshHit hit;
 
     // Private variables
-    private Vector2 TargetLocation;
+    [SerializeField] private Transform Target;
+    [SerializeField] private Vector3 WanderTarget;
 
     private bool isDead;
     private bool isChasing;
@@ -25,6 +27,12 @@ public class EnemiesAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
+
+        WanderTarget = new Vector3(0, 0, 0);
+        tr = GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
         isDead = false;
         isChasing = false;
@@ -37,31 +45,49 @@ public class EnemiesAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(WanderTarget.x == 0 && WanderTarget.y == 0)
+        {
+            Wander();
+        }
+
         if (isChasing == false)
         {
             // Wander
-            if (rb.position == TargetLocation)
+            if ((tr.position.x < WanderTarget.x + 0.2 && tr.position.x > WanderTarget.x - 0.2)  && (tr.position.y < WanderTarget.y + 0.2 && tr.position.y > WanderTarget.y - 0.2))
             {
-                Wander();
+                //Wander();
             }
             else
             {
-                rb.position = Vector2.MoveTowards(rb.position, TargetLocation, MAX_WANDER_SPEED * Time.deltaTime);
+                agent.SetDestination(WanderTarget);
             }    
         }
-
     }
 
-    public Vector2 Vector2FromAngle(float angle)
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        angle *= Mathf.Deg2Rad;
-        return new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+        if (collision.gameObject.tag == "Map")
+        {
+            Debug.Log("\nKolizja wykryta.");
+            Wander();
+        }
     }
 
     void Wander()
     {
-        Vector2 SinAndCosFromAngle = Vector2FromAngle(Random.Range(0, 360));
-        TargetLocation = SinAndCosFromAngle * WANDER_RING_RADIUS + rb.position;
-        Debug.Log("\nTarget Location: "+ TargetLocation + "   Sinus And Cosinus From Angle: " + SinAndCosFromAngle);
+        while (true)
+        {
+            Vector3 randomPoint = tr.position + Random.insideUnitSphere;
+            randomPoint[2] = 0;
+            Debug.Log("\nrandomPoint" + randomPoint);
+            WanderTarget = randomPoint * WANDER_RING_RADIUS;
+            if (NavMesh.SamplePosition(WanderTarget, out hit, 1f, NavMesh.AllAreas))
+            {
+                Debug.Log("\nPunkt w navmeshu");
+                Debug.Log("\nWander Target Location: " + WanderTarget +"        Transform Position: " + tr.position);
+                break;
+            }
+        }
+        //Vector3 test = new Vector3(Target.x, Target.y, 0);
     }
 }

@@ -149,6 +149,21 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &87683613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 87683611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0a050760820a2248a685cb9f751c4db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DebugMode: 1
+  Target: {fileID: 0}
+  WanderTarget: {x: 0, y: 0, z: 0}
 --- !u!1 &111963228
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,8 +174,8 @@ GameObject:
   m_Component:
   - component: {fileID: 111963232}
   - component: {fileID: 111963231}
-  - component: {fileID: 111963229}
   - component: {fileID: 111963230}
+  - component: {fileID: 111963229}
   m_Layer: 0
   m_Name: wall (3)
   m_TagString: Map
@@ -177,7 +192,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 111963228}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Script: {fileID: 11500000, guid: b745c4f678720fc48b6f5482ccb6b068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_OverrideArea: 1
@@ -191,7 +206,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 111963228}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -249,7 +264,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: c411561e5c256264ba3ddea959c5aa35, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fbb5cd4eb456e6f49b70cba05969975d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -284,8 +299,8 @@ GameObject:
   m_Component:
   - component: {fileID: 234372765}
   - component: {fileID: 234372764}
-  - component: {fileID: 234372766}
   - component: {fileID: 234372763}
+  - component: {fileID: 234372766}
   m_Layer: 0
   m_Name: wall (6)
   m_TagString: Map
@@ -300,7 +315,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 234372762}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -358,7 +373,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: c411561e5c256264ba3ddea959c5aa35, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fbb5cd4eb456e6f49b70cba05969975d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -392,11 +407,85 @@ MonoBehaviour:
   m_GameObject: {fileID: 234372762}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Script: {fileID: 11500000, guid: b745c4f678720fc48b6f5482ccb6b068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_OverrideArea: 1
   m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
+--- !u!1 &367720917
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 367720918}
+  - component: {fileID: 367720920}
+  - component: {fileID: 367720919}
+  m_Layer: 0
+  m_Name: Floor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &367720918
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 367720917}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 3.050001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 939457907}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &367720919
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 367720917}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -3.0190794, y: 0.074230194}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 21.292217, y: 14.0166855}
+  m_EdgeRadius: 0
+--- !u!114 &367720920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 367720917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b745c4f678720fc48b6f5482ccb6b068, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 0
   m_IgnoreFromBuild: 0
   m_AffectedAgents: ffffffff
 --- !u!4 &506098881 stripped
@@ -415,8 +504,8 @@ GameObject:
   m_Component:
   - component: {fileID: 554421544}
   - component: {fileID: 554421543}
-  - component: {fileID: 554421541}
   - component: {fileID: 554421542}
+  - component: {fileID: 554421541}
   m_Layer: 0
   m_Name: wall
   m_TagString: Map
@@ -433,7 +522,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 554421540}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Script: {fileID: 11500000, guid: b745c4f678720fc48b6f5482ccb6b068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_OverrideArea: 1
@@ -447,7 +536,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 554421540}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -505,7 +594,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: c411561e5c256264ba3ddea959c5aa35, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fbb5cd4eb456e6f49b70cba05969975d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -540,8 +629,8 @@ GameObject:
   m_Component:
   - component: {fileID: 692447759}
   - component: {fileID: 692447758}
-  - component: {fileID: 692447760}
   - component: {fileID: 692447757}
+  - component: {fileID: 692447760}
   m_Layer: 0
   m_Name: wall (7)
   m_TagString: Map
@@ -556,13 +645,13 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 692447756}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.00000086426735}
+  m_Offset: {x: 0.009567648, y: -0.000000834465}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -573,7 +662,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.3913133}
+  m_Size: {x: 1.1416345, y: 1.3913133}
   m_EdgeRadius: 0
 --- !u!212 &692447758
 SpriteRenderer:
@@ -614,7 +703,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: c411561e5c256264ba3ddea959c5aa35, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fbb5cd4eb456e6f49b70cba05969975d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -633,8 +722,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 692447756}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -8.357, y: -1, z: 4.9100003}
-  m_LocalScale: {x: 4.5967684, y: 1, z: 1}
+  m_LocalPosition: {x: -8.279, y: -1, z: 4.9100003}
+  m_LocalScale: {x: 4.7539177, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 939457907}
   m_RootOrder: 7
@@ -648,7 +737,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 692447756}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Script: {fileID: 11500000, guid: b745c4f678720fc48b6f5482ccb6b068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_OverrideArea: 1
@@ -681,7 +770,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 939457905}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 148387606d0ccd84fa326ca211f274ba, type: 3}
+  m_Script: {fileID: 11500000, guid: 66ec6bf3d6dc715449f48dde435b61c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_AgentTypeID: 0
@@ -704,7 +793,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.06666667
   m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 23800000, guid: 3f6eeca9d6899bd42a136fff0f5996d5, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 1c25e4f1ab8d50c4b9bc7515ba764f29, type: 2}
 --- !u!4 &939457907
 Transform:
   m_ObjectHideFlags: 0
@@ -726,6 +815,7 @@ Transform:
   - {fileID: 692447759}
   - {fileID: 1581549255}
   - {fileID: 1167887471}
+  - {fileID: 367720918}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -822,8 +912,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1167887471}
   - component: {fileID: 1167887470}
-  - component: {fileID: 1167887472}
   - component: {fileID: 1167887469}
+  - component: {fileID: 1167887472}
   m_Layer: 0
   m_Name: wall (9)
   m_TagString: Map
@@ -838,13 +928,13 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1167887468}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.01956606, y: 0}
+  m_Offset: {x: -0.050821304, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -855,7 +945,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.3521833, y: 1}
+  m_Size: {x: 1.4929581, y: 1}
   m_EdgeRadius: 0
 --- !u!212 &1167887470
 SpriteRenderer:
@@ -896,7 +986,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: c411561e5c256264ba3ddea959c5aa35, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fbb5cd4eb456e6f49b70cba05969975d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -930,7 +1020,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1167887468}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Script: {fileID: 11500000, guid: b745c4f678720fc48b6f5482ccb6b068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_OverrideArea: 1
@@ -1021,8 +1111,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1187395915}
   - component: {fileID: 1187395914}
-  - component: {fileID: 1187395912}
   - component: {fileID: 1187395913}
+  - component: {fileID: 1187395912}
   m_Layer: 0
   m_Name: wall (1)
   m_TagString: Map
@@ -1039,7 +1129,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1187395911}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Script: {fileID: 11500000, guid: b745c4f678720fc48b6f5482ccb6b068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_OverrideArea: 1
@@ -1053,7 +1143,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1187395911}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -1111,7 +1201,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: c411561e5c256264ba3ddea959c5aa35, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fbb5cd4eb456e6f49b70cba05969975d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1146,8 +1236,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1511373872}
   - component: {fileID: 1511373871}
-  - component: {fileID: 1511373869}
   - component: {fileID: 1511373870}
+  - component: {fileID: 1511373869}
   m_Layer: 0
   m_Name: wall (2)
   m_TagString: Map
@@ -1164,7 +1254,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1511373868}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Script: {fileID: 11500000, guid: b745c4f678720fc48b6f5482ccb6b068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_OverrideArea: 1
@@ -1178,7 +1268,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1511373868}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -1236,7 +1326,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: c411561e5c256264ba3ddea959c5aa35, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fbb5cd4eb456e6f49b70cba05969975d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1271,8 +1361,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1550050549}
   - component: {fileID: 1550050548}
-  - component: {fileID: 1550050550}
   - component: {fileID: 1550050547}
+  - component: {fileID: 1550050550}
   m_Layer: 0
   m_Name: wall (5)
   m_TagString: Map
@@ -1287,7 +1377,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1550050546}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -1345,7 +1435,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: c411561e5c256264ba3ddea959c5aa35, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fbb5cd4eb456e6f49b70cba05969975d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1379,7 +1469,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1550050546}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Script: {fileID: 11500000, guid: b745c4f678720fc48b6f5482ccb6b068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_OverrideArea: 1
@@ -1396,8 +1486,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1581549255}
   - component: {fileID: 1581549254}
-  - component: {fileID: 1581549256}
   - component: {fileID: 1581549253}
+  - component: {fileID: 1581549256}
   m_Layer: 0
   m_Name: wall (8)
   m_TagString: Map
@@ -1412,7 +1502,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1581549252}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -1470,7 +1560,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: c411561e5c256264ba3ddea959c5aa35, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fbb5cd4eb456e6f49b70cba05969975d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1504,7 +1594,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1581549252}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Script: {fileID: 11500000, guid: b745c4f678720fc48b6f5482ccb6b068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_OverrideArea: 1
@@ -1521,8 +1611,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1610849347}
   - component: {fileID: 1610849346}
-  - component: {fileID: 1610849348}
   - component: {fileID: 1610849345}
+  - component: {fileID: 1610849348}
   m_Layer: 0
   m_Name: wall (4)
   m_TagString: Map
@@ -1537,7 +1627,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1610849344}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -1595,7 +1685,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: c411561e5c256264ba3ddea959c5aa35, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fbb5cd4eb456e6f49b70cba05969975d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1629,7 +1719,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1610849344}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Script: {fileID: 11500000, guid: b745c4f678720fc48b6f5482ccb6b068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_OverrideArea: 1

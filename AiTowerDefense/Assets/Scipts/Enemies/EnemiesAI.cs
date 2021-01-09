@@ -5,11 +5,11 @@ using UnityEngine.AI;
 
 public class EnemiesAI : MonoBehaviour
 {
-    Rigidbody2D rb;
+    public bool DebugMode = false;
     Transform tr;
 
     // Private global variables
-    private float WANDER_RING_RADIUS = 3;
+    private float WANDER_RING_RADIUS = 10;
     private NavMeshAgent agent;
     private NavMeshHit hit;
 
@@ -17,9 +17,7 @@ public class EnemiesAI : MonoBehaviour
     [SerializeField] private Transform Target;
     [SerializeField] private Vector3 WanderTarget;
 
-    private bool isDead;
     private bool isChasing;
-    private bool detectedEnemy;
     private bool isStuned;
     private int stunTime;
     private int HealthPoints;
@@ -33,10 +31,7 @@ public class EnemiesAI : MonoBehaviour
 
         WanderTarget = new Vector3(0, 0, 0);
         tr = GetComponent<Transform>();
-        rb = GetComponent<Rigidbody2D>();
-        isDead = false;
         isChasing = false;
-        detectedEnemy = false;
         isStuned = false;
         stunTime = 0;
         HealthPoints = 100;
@@ -45,49 +40,122 @@ public class EnemiesAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(WanderTarget.x == 0 && WanderTarget.y == 0)
-        {
-            Wander();
-        }
-
+        // Wander if there is no surviviors or player
         if (isChasing == false)
         {
-            // Wander
-            if ((tr.position.x < WanderTarget.x + 0.2 && tr.position.x > WanderTarget.x - 0.2)  && (tr.position.y < WanderTarget.y + 0.2 && tr.position.y > WanderTarget.y - 0.2))
+            // Random wander
+            if ((tr.position.x < WanderTarget[0] + 0.25 && tr.position.x > WanderTarget[0] - 0.25)  && (tr.position.y < WanderTarget[1] + 0.25 && tr.position.y > WanderTarget[1] - 0.25))
             {
-                //Wander();
+                Wander();
             }
             else
             {
                 agent.SetDestination(WanderTarget);
             }    
         }
-    }
-
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Map")
+        // Chase player if in range
+        if (isChasing == true)
         {
-            Debug.Log("\nKolizja wykryta.");
-            Wander();
+            agent.SetDestination(Target.position);
         }
     }
 
+    // On Collision enter
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Change wander location if wall is hitted
+        if (collision.gameObject.tag == "Map")
+        {
+            if (DebugMode)
+            {
+                Debug.Log("\nKolizja z mapą wykryta.");
+            }
+            Wander();
+        }
+
+        // Attack if catched survavior or player
+        if (collision.gameObject.tag == "Survivor" || collision.gameObject.tag == "Player")
+        {
+            if (DebugMode)
+            {
+                if (collision.gameObject.tag == "Survivor")
+                {
+                    Debug.Log("\nWykryta kolizja z ocalałym.");
+                }
+                if (collision.gameObject.tag == "Player")
+                {
+                    Debug.Log("\nWykryta kolizja z graczem.");
+                }
+            }
+        }
+    }
+
+    // On Collision exit
+    void OnCollisionExit2D(Collision2D other) 
+    {
+        //Stop chasing if lost sight of target
+        if (other.gameObject == Target.gameObject)
+        {
+            if (DebugMode)
+            {
+                Debug.Log("\nStracono cel z oczu.");
+            }
+            isChasing = false;
+            WanderTarget = Target.position;
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        //Check to see if the tag on the collider is equal to Survivor or Player
+        if (other.gameObject.tag == "Survivor" || other.gameObject.tag == "Player")
+        {
+            if (DebugMode)
+            {
+                if (other.gameObject.tag == "Survivor")
+                {
+                    Debug.Log("Triggered by Survivor");
+                }
+                if (other.gameObject.tag == "Player")
+                {
+                    Debug.Log("Triggered by Player");
+                }
+            }
+            Target = other.gameObject.transform;
+        }
+
+        // Start chasing enemy
+        isChasing = true;
+        agent.SetDestination(other.gameObject.transform.position);
+    }
+
+    // Random wandering 
     void Wander()
     {
         while (true)
         {
-            Vector3 randomPoint = tr.position + Random.insideUnitSphere;
-            randomPoint[2] = 0;
-            Debug.Log("\nrandomPoint" + randomPoint);
-            WanderTarget = randomPoint * WANDER_RING_RADIUS;
-            if (NavMesh.SamplePosition(WanderTarget, out hit, 1f, NavMesh.AllAreas))
+            WanderTarget = tr.position + (Random.insideUnitSphere * WANDER_RING_RADIUS);
+            WanderTarget[2] = -1;
+            if (DebugMode)
             {
-                Debug.Log("\nPunkt w navmeshu");
-                Debug.Log("\nWander Target Location: " + WanderTarget +"        Transform Position: " + tr.position);
-                break;
+                Debug.Log("\n------------");
+                Debug.Log("\nWanderTarget"+ WanderTarget);
+            }
+            if (NavMesh.SamplePosition(WanderTarget, out hit, 1f, NavMesh.AllAreas))
+                {
+                    if (DebugMode)
+                    {
+                        Debug.Log("\nPunkt w navmeshu");
+                        Debug.Log("\nWander Target Location: " + WanderTarget + "        Transform Position: " + tr.position);
+                    
+                    }
+                    break;
+                }
+            else if (DebugMode)
+            {
+                Debug.Log("\nPunkt poza navmeshem");
             }
         }
-        //Vector3 test = new Vector3(Target.x, Target.y, 0);
     }
 }
+

@@ -14,10 +14,11 @@ public class EnemiesAI : MonoBehaviour
     private NavMeshAgent agent;
     private NavMeshHit hit;
 
-    private float WANDER_RING_RADIUS = 10;
-    [SerializeField] private Transform Target;
-    [SerializeField] private Vector3 WanderTarget;
-    [SerializeField] private float AggresiveAggroDistance = 3;
+    [SerializeField] private float waderRingRadius = 10;
+    [SerializeField] private Transform target;
+    [SerializeField] private Vector3 wanderTarget;
+    [SerializeField] private float aggresiveAggroDistance = 3;
+    [SerializeField] private float attackDamage = 20;
 
     private bool isChasing;
     private bool isStuned;
@@ -30,7 +31,7 @@ public class EnemiesAI : MonoBehaviour
         agent.updateRotation = false;
         agent.updateUpAxis = false;
 
-        WanderTarget = new Vector3(0, 0, 0);
+        wanderTarget = new Vector3(0, 0, 0);
         tr = GetComponent<Transform>();
         isChasing = false;
         isStuned = false;
@@ -45,19 +46,19 @@ public class EnemiesAI : MonoBehaviour
         if (isChasing == false)
         {
             // Random wander
-            if ((tr.position.x < WanderTarget[0] + 0.25 && tr.position.x > WanderTarget[0] - 0.25)  && (tr.position.y < WanderTarget[1] + 0.25 && tr.position.y > WanderTarget[1] - 0.25))
+            if ((tr.position.x < wanderTarget[0] + 0.25 && tr.position.x > wanderTarget[0] - 0.25)  && (tr.position.y < wanderTarget[1] + 0.25 && tr.position.y > wanderTarget[1] - 0.25))
             {
                 Wander();
             }
             else
             {
-                agent.SetDestination(WanderTarget);
+                agent.SetDestination(wanderTarget);
             }    
         }
         // Chase player if in range
         if (isChasing == true)
         {
-            agent.SetDestination(Target.position);
+            agent.SetDestination(target.position);
         }
     }
 
@@ -65,7 +66,7 @@ public class EnemiesAI : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         // Change wander location if wall is hitted
-        if (collision.gameObject.tag == "Map")
+        if (collision.gameObject.tag == "Wall")
         {
             if (DebugMode)
             {
@@ -107,7 +108,7 @@ public class EnemiesAI : MonoBehaviour
                     Debug.Log("Triggered by Player");
                 }
             }
-            Target = other.gameObject.transform;
+            target = other.gameObject.transform;
         }
 
         // Start chasing enemy
@@ -119,25 +120,25 @@ public class EnemiesAI : MonoBehaviour
     void OnTriggerStay2D(Collider2D other)
     {
         // Change target if someone is in agresive aggro range
-        if ((other.gameObject.tag == "Survivor" || other.gameObject.tag == "Player") && other.gameObject != Target.gameObject)
+        if ((other.gameObject.tag == "Survivor" || other.gameObject.tag == "Player") && other.gameObject != target.gameObject)
         {
-            if (other.gameObject != Target.gameObject ) {
+            if (other.gameObject != target.gameObject ) {
                 {
                     float distanceBetweenPlayerAndCollision = Vector3.Distance(other.gameObject.transform.position,tr.position);
-                    if (distanceBetweenPlayerAndCollision <=  AggresiveAggroDistance)
+                    if (distanceBetweenPlayerAndCollision <=  aggresiveAggroDistance)
                     {
                         if (DebugMode)
                         {
                             Debug.Log("\nNowy cel w bardzo bliskiej odległości.");
                         }
-                        float distanceBetweenPlayerAndTarget = Vector3.Distance(Target.position,tr.position);
+                        float distanceBetweenPlayerAndTarget = Vector3.Distance(target.position,tr.position);
                         if (distanceBetweenPlayerAndCollision < distanceBetweenPlayerAndTarget)
                         {
                             if (DebugMode)
                             {
                                 Debug.Log("\nZmieniam cel ataku.");
                             }
-                            Target = other.gameObject.transform;
+                            target = other.gameObject.transform;
                         }
                     }
                 }
@@ -149,15 +150,15 @@ public class EnemiesAI : MonoBehaviour
     void OnTriggerExit2D(Collider2D other) 
     {
         //Stop chasing if lost sight of target
-        if (other.gameObject == Target.gameObject)
+        if (other.gameObject == target.gameObject)
         {
             if (DebugMode)
             {
                 Debug.Log("\nStracono cel z oczu.");
             }
             isChasing = false;
-            WanderTarget = Target.position;
-            Target = null;
+            wanderTarget = target.position;
+            target = null;
         }
     }
 
@@ -170,14 +171,14 @@ public class EnemiesAI : MonoBehaviour
         }
         while (true)
         {
-            WanderTarget = tr.position + (Random.insideUnitSphere * WANDER_RING_RADIUS);
-            WanderTarget[2] = -1;
-            if (NavMesh.SamplePosition(WanderTarget, out hit, 1f, NavMesh.AllAreas))
+            wanderTarget = tr.position + (Random.insideUnitSphere * waderRingRadius);
+            wanderTarget[2] = -1;
+            if (NavMesh.SamplePosition(wanderTarget, out hit, 1f, NavMesh.AllAreas))
                 {
                     if (DebugMode)
                     {
                         Debug.Log("\nPunkt w navmeshu");
-                        Debug.Log("\nWander Target Location: " + WanderTarget + "        Transform Position: " + tr.position);
+                        Debug.Log("\nWander Target Location: " + wanderTarget + "        Transform Position: " + tr.position);
                     
                     }
                     break;
@@ -189,4 +190,3 @@ public class EnemiesAI : MonoBehaviour
         }
     }
 }
-

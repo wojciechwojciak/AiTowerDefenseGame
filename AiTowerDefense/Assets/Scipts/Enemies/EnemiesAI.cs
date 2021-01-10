@@ -5,15 +5,16 @@ using UnityEngine.AI;
 
 public class EnemiesAI : MonoBehaviour
 {
-    public bool DebugMode = false;
-    Transform tr;
-
-    // Private global variables
-    private float WANDER_RING_RADIUS = 10;
+    // Public variables
+    public int healthPoints;
+    
+    // Private variables
+    [SerializeField] private bool DebugMode = false;
+    private Transform tr;
     private NavMeshAgent agent;
     private NavMeshHit hit;
 
-    // Private variables
+    private float WANDER_RING_RADIUS = 10;
     [SerializeField] private Transform Target;
     [SerializeField] private Vector3 WanderTarget;
     [SerializeField] private float AggresiveAggroDistance = 3;
@@ -21,7 +22,6 @@ public class EnemiesAI : MonoBehaviour
     private bool isChasing;
     private bool isStuned;
     private int stunTime;
-    private int HealthPoints;
 
     // Start is called before the first frame update
     void Start()
@@ -35,7 +35,7 @@ public class EnemiesAI : MonoBehaviour
         isChasing = false;
         isStuned = false;
         stunTime = 0;
-        HealthPoints = 100;
+        healthPoints = 100;
     }
 
     // Update is called once per frame

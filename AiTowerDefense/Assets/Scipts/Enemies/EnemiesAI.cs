@@ -11,13 +11,17 @@ public class EnemiesAI : MonoBehaviour
     // Private variables
     [SerializeField] private bool DebugMode = false;
     private Transform tr;
+    private CircleCollider2D cirCol;
     private NavMeshAgent agent;
     private NavMeshHit hit;
+
 
     [SerializeField] private float waderRingRadius = 10;
     [SerializeField] private Transform target;
     [SerializeField] private Vector3 wanderTarget;
     [SerializeField] private float aggresiveAggroDistance = 3;
+    [SerializeField] private float aggroDistance = 5;
+    [SerializeField] private float alarmDistance = 20;
     [SerializeField] private float attackDamage = 20;
 
     private bool isChasing;
@@ -27,10 +31,14 @@ public class EnemiesAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        cirCol = GetComponent<CircleCollider2D>();
+        cirCol.radius = alarmDistance;
+
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
 
+        target = gameObject.transform;
         wanderTarget = new Vector3(0, 0, 0);
         tr = GetComponent<Transform>();
         isChasing = false;
@@ -94,63 +102,61 @@ public class EnemiesAI : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        //Check to see if the tag on the collider is equal to Survivor or Player
-        if (other.gameObject.tag == "Survivor" || other.gameObject.tag == "Player")
-        {
-            if (DebugMode)
-            {
-                if (other.gameObject.tag == "Survivor")
-                {
-                    Debug.Log("Triggered by Survivor");
-                }
-                if (other.gameObject.tag == "Player")
-                {
-                    Debug.Log("Triggered by Player");
-                }
-            }
-            target = other.gameObject.transform;
-        }
 
-        // Start chasing enemy
-        isChasing = true;
-        agent.SetDestination(other.gameObject.transform.position);
     }
 
     // On Trigger Stay
     void OnTriggerStay2D(Collider2D other)
     {
-        // Change target if someone is in agresive aggro range
-        if ((other.gameObject.tag == "Survivor" || other.gameObject.tag == "Player") && other.gameObject != target.gameObject)
+        bool hasPossibleTarget = other.gameObject.tag == "Survivor" || other.gameObject.tag == "Player";
+        if (hasPossibleTarget)
         {
-            if (other.gameObject != target.gameObject ) {
+            bool hasAggro = Vector3.Distance(other.gameObject.transform.position, tr.position) <  aggroDistance;
+            // Start chasing if found player or survivor
+            if (hasAggro && !isChasing)
+            {
+                if (DebugMode)
                 {
-                    float distanceBetweenPlayerAndCollision = Vector3.Distance(other.gameObject.transform.position,tr.position);
-                    if (distanceBetweenPlayerAndCollision <=  aggresiveAggroDistance)
+                    if (other.gameObject.tag == "Survivor")
                     {
-                        if (DebugMode)
-                        {
-                            Debug.Log("\nNowy cel w bardzo bliskiej odległości.");
-                        }
-                        float distanceBetweenPlayerAndTarget = Vector3.Distance(target.position,tr.position);
-                        if (distanceBetweenPlayerAndCollision < distanceBetweenPlayerAndTarget)
-                        {
-                            if (DebugMode)
-                            {
-                                Debug.Log("\nZmieniam cel ataku.");
-                            }
-                            target = other.gameObject.transform;
-                        }
+                        Debug.Log("\nTriggered by Survivor");
+                    }
+                    if (other.gameObject.tag == "Player")
+                    {
+                        Debug.Log("\nTriggered by Player");
                     }
                 }
+                // Start chasing enemy
+                target = other.gameObject.transform;
+                isChasing = true;
             }
-        }
-    }
 
-    // On Trigger exit
-    void OnTriggerExit2D(Collider2D other) 
-    {
+            bool hasOtherObjectThanTarget = other.gameObject != target.gameObject;
+            bool otherObjectIsExtremelyClose = Vector3.Distance(other.gameObject.transform.position,tr.position) <  aggresiveAggroDistance;
+            // Change target if someone is in agresive aggro range
+            if (hasOtherObjectThanTarget && isChasing && otherObjectIsExtremelyClose)
+            {
+                float distanceBetweenPlayerAndCollision = Vector3.Distance(other.gameObject.transform.position,tr.position);
+                float distanceBetweenPlayerAndTarget = Vector3.Distance(target.position,tr.position);
+                if (DebugMode)
+                {
+                    Debug.Log("\nNowy cel w bardzo bliskiej odległości.");
+                }
+                
+                if (distanceBetweenPlayerAndCollision < distanceBetweenPlayerAndTarget)
+                {
+                    if (DebugMode)
+                    {
+                        Debug.Log("\nZmieniam target na:"+other.gameObject.tag+"     Odległość od targetu:"+distanceBetweenPlayerAndTarget+"       Odległość do nowego celu: "+distanceBetweenPlayerAndCollision);
+                    }
+                    target = other.gameObject.transform;
+                }
+            }
+        
+        } // end of hasPossibleTarget
+    
         //Stop chasing if lost sight of target
-        if (other.gameObject == target.gameObject)
+        if (other.gameObject == target.gameObject && Vector3.Distance(other.gameObject.transform.position,tr.position) >  aggroDistance)
         {
             if (DebugMode)
             {
@@ -158,8 +164,34 @@ public class EnemiesAI : MonoBehaviour
             }
             isChasing = false;
             wanderTarget = target.position;
-            target = null;
+            target = gameObject.transform;
         }
+
+        // Start grouping enemies
+        bool zombieInRange = other.gameObject.tag == "Zombie" && Vector3.Distance(other.gameObject.transform.position,tr.position) <= alarmDistance;
+        if (isChasing && zombieInRange)
+        {
+            if (DebugMode)
+            {
+                Debug.Log("\nPrzekazuję target do obiektu:");
+            }
+            other.GetComponent<EnemiesAI>().ChangeTarget(target);
+        }
+    }
+
+    // On Trigger exit
+    void OnTriggerExit2D(Collider2D other) 
+    {
+
+    }
+
+    //Change target
+    public void ChangeTarget(Transform tr)
+    {
+        if (tr != target)
+        {
+            target = tr;
+        } 
     }
 
     // Random wandering 
@@ -177,16 +209,11 @@ public class EnemiesAI : MonoBehaviour
                 {
                     if (DebugMode)
                     {
-                        Debug.Log("\nPunkt w navmeshu");
                         Debug.Log("\nWander Target Location: " + wanderTarget + "        Transform Position: " + tr.position);
                     
                     }
                     break;
                 }
-            else if (DebugMode)
-            {
-                Debug.Log("\nPunkt poza navmeshem");
-            }
         }
     }
 }

@@ -69,13 +69,6 @@ public class SurvivorAI : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        //Cooldown
-        if (hasCooldown)
-        {
-            //create trap on the ground
-            //StartCoroutine(WaitForCooldownToEnd());
-        }
         
         // Follow player if in range
         if (isPlayerNearby)
@@ -86,6 +79,11 @@ public class SurvivorAI : MonoBehaviour
             if(isZombieNearby)
             {
                 //use traps
+                if (!hasCooldown)
+                {
+                    //create trap on the ground
+                    //StartCoroutine(WaitForCooldownToEnd());
+                }
             }
         }
         // Run away from zombie if in range
@@ -94,6 +92,11 @@ public class SurvivorAI : MonoBehaviour
             isFollowing = false;
             isRunning = true;
             //use traps
+                if (!hasCooldown)
+                {
+                    //create trap on the ground
+                    //StartCoroutine(WaitForCooldownToEnd());
+                }
         }
         else
         {   
@@ -132,6 +135,23 @@ public class SurvivorAI : MonoBehaviour
                 }
             }
         }
+    }
+    void OnCollisionExit2D(Collision2D collision) {
+
+    }
+    void OnTriggerEnter2D(Collider2D other){
+
+    }
+
+    void OnTriggerStay2D(Collider2D other){
+        bool hasPossibleTarget = other.gameObject.tag == "Enemy" || other.gameObject.tag == "Player";
+        if(hasPossibleTarget){
+
+        }
+    }
+    void OnTriggerExit2D(Collider2D other) 
+    {
+
     }
     void Wander()
     {

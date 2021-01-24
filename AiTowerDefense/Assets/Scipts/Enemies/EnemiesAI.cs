@@ -22,11 +22,12 @@ public class EnemiesAI : MonoBehaviour
     [SerializeField] private Vector3 wanderTarget;
     [SerializeField] private float aggresiveAggroDistance = 3;
     [SerializeField] private float aggroDistance = 5;
-    [SerializeField] private float alarmDistance = 20;
+    [SerializeField] private float alarmDistance = 8;
     [SerializeField] private float attackDamage = 20;
-
-    private bool isChasing;
-    private bool isStuned;
+    [SerializeField] private int bulletDamage = 20;
+    [SerializeField] private int trapDamage = 20;
+    [SerializeField] private bool isChasing;
+    [SerializeField] private bool isStuned;
     private float stunTime = 5f;
 
     // Start is called before the first frame update
@@ -71,11 +72,12 @@ public class EnemiesAI : MonoBehaviour
             StartCoroutine(WaitForStunToEnd());
             agent.speed = 0;
             agent.velocity = Vector3.zero;
+            isChasing = false;
         }
         else
         {
             // Wander if there is no surviviors or player
-            if (isChasing == false)
+            if (!isChasing)
             {
                 // Random wander
                 if ((tr.position.x < wanderTarget[0] + 0.25 && tr.position.x > wanderTarget[0] - 0.25)  && (tr.position.y < wanderTarget[1] + 0.25 && tr.position.y > wanderTarget[1] - 0.25))
@@ -117,7 +119,7 @@ public class EnemiesAI : MonoBehaviour
             }
 
             //HP decrecement
-            healthPoints -= 20;
+            healthPoints -= bulletDamage;
         }
 
         if (collision.gameObject.tag == "Trap")
@@ -128,8 +130,10 @@ public class EnemiesAI : MonoBehaviour
             }
 
             //HP decrecement
-            healthPoints -= 10;
+            healthPoints -= trapDamage;
             isStuned = true;
+            isChasing = false;
+            Destroy(collision.gameObject);
         }
 
 
@@ -153,6 +157,14 @@ public class EnemiesAI : MonoBehaviour
             {
                 //collision.gameObject.GetComponent<PlayerController>().healthPoints = collision.gameObject.GetComponent<PlayerController>().healthPoints - 20;
                 isStuned = true;
+                isChasing = false;
+            }
+
+            if (collision.gameObject.tag == "Survivor")
+            {
+                //collision.gameObject.GetComponent<SurvaviorAI>().healthPoints = collision.gameObject.GetComponent<SurvaviorAI>().healthPoints - 20;
+                isStuned = true;
+                isChasing = false;
             }
         }
     }
@@ -190,7 +202,8 @@ public class EnemiesAI : MonoBehaviour
                         }
                     }
                     // Start chasing enemy
-                    isChasing = true;
+                    target = other.gameObject.transform;
+                    isChasing = true; 
                 }
 
                 bool hasOtherObjectThanTarget = other.gameObject != target.gameObject;

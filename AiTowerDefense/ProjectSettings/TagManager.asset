@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Survivor
   - Wall
+  - Trap
   layers:
   - Default
   - TransparentFX

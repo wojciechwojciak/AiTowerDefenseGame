@@ -14,21 +14,24 @@ public class EnemiesAI : MonoBehaviour
     private CircleCollider2D cirCol;
     private NavMeshAgent agent;
     private float agentNormalSpeed = 3.5f;
+    private float agentchasingSpeed = 4f;
     private NavMeshHit hit;
 
 
-    [SerializeField] private float waderRingRadius = 10;
+    [SerializeField] private float maxWaderRingRadius = 100;
+    [SerializeField] private float minWaderRingRadius = 15;
     [SerializeField] public Transform target;
     [SerializeField] private Vector3 wanderTarget;
-    [SerializeField] private float aggresiveAggroDistance = 3;
-    [SerializeField] private float aggroDistance = 5;
-    [SerializeField] private float alarmDistance = 8;
-    [SerializeField] private float attackDamage = 20;
+    [SerializeField] private float aggresiveAggroDistance = 5;
+    [SerializeField] private float aggroDistance = 10;
+    [SerializeField] private float alarmDistance = 25;
+    [SerializeField] private int attackDamage = 20;
     [SerializeField] private int bulletDamage = 20;
     [SerializeField] private int trapDamage = 20;
     [SerializeField] private bool isChasing;
     [SerializeField] private bool isStuned;
-    private float stunTime = 5f;
+    private float bombStunTime = 5f;
+    private float hitStunTime = 2f;
 
     // Start is called before the first frame update
     void Start()
@@ -48,11 +51,20 @@ public class EnemiesAI : MonoBehaviour
         healthPoints = 100;
     }
 
-    IEnumerator WaitForStunToEnd() {
+    IEnumerator trapStun() {
      // Wait 5 sec seconds
      agent.speed = 0;
      agent.velocity = Vector3.zero;
-     yield return new WaitForSeconds(stunTime);
+     yield return new WaitForSeconds(bombStunTime);
+     agent.speed = agentNormalSpeed;
+     isStuned = false;
+    }
+
+    IEnumerator hitStun() {
+     // Wait 2 sec seconds
+     agent.speed = 0;
+     agent.velocity = Vector3.zero;
+     yield return new WaitForSeconds(hitStunTime);
      agent.speed = agentNormalSpeed;
      isStuned = false;
     }
@@ -60,6 +72,14 @@ public class EnemiesAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isChasing)
+        {
+            agent.speed = agentchasingSpeed;
+        }
+        else
+        {
+            agent.speed = agentNormalSpeed;
+        }
         //  Destroy if HP <= 0
         if (healthPoints <= 0)
         {
@@ -71,34 +91,35 @@ public class EnemiesAI : MonoBehaviour
             isChasing = false;
             target = gameObject.transform;
         }
-
-        //Stun time
-        if (isStuned)
-        {
-            StartCoroutine(WaitForStunToEnd());
-            agent.speed = 0;
-            agent.velocity = Vector3.zero;
-            isChasing = false;
-        }
         else
         {
-            // Wander if there is no surviviors or player
-            if (!isChasing)
+            //Stun time
+            if (isStuned)
             {
-                // Random wander
-                if ((tr.position.x < wanderTarget[0] + 0.25 && tr.position.x > wanderTarget[0] - 0.25)  && (tr.position.y < wanderTarget[1] + 0.25 && tr.position.y > wanderTarget[1] - 0.25))
-                {
-                    Wander();
-                }
-                else
-                {
-                    agent.SetDestination(wanderTarget);
-                }    
+                agent.speed = 0;
+                agent.velocity = Vector3.zero;
+                isChasing = false;
             }
-            // Chase player if in range
-            if (isChasing == true)
+            else
             {
-                agent.SetDestination(target.position);
+                // Wander if there is no surviviors or player
+                if (!isChasing)
+                {
+                    // Random wander
+                    if ((tr.position.x < wanderTarget[0] + 0.25 && tr.position.x > wanderTarget[0] - 0.25)  && (tr.position.y < wanderTarget[1] + 0.25 && tr.position.y > wanderTarget[1] - 0.25))
+                    {
+                        Wander();
+                    }
+                    else
+                    {
+                        agent.SetDestination(wanderTarget);
+                    }    
+                }
+                // Chase player if in range
+                if (isChasing == true)
+                {
+                    agent.SetDestination(target.position);
+                }
             }
         }
     }
@@ -134,7 +155,7 @@ public class EnemiesAI : MonoBehaviour
             {
                 Debug.Log("\nWykryta kolizja z pułapką.");
             }
-
+            StartCoroutine(trapStun());
             //HP decrecement
             healthPoints -= trapDamage;
             isStuned = true;
@@ -161,38 +182,56 @@ public class EnemiesAI : MonoBehaviour
             // Attack
             if (collision.gameObject.tag == "Player")
             {
-                collision.gameObject.GetComponent<PlayerController>().healthPoints = collision.gameObject.GetComponent<PlayerController>().healthPoints - 20;
+                collision.gameObject.GetComponent<PlayerController>().healthPoints = collision.gameObject.GetComponent<PlayerController>().healthPoints - attackDamage;
                 isStuned = true;
                 isChasing = false;
+                StartCoroutine(hitStun());
             }
 
             if (collision.gameObject.tag == "Survivor")
             {
-                collision.gameObject.GetComponent<SurvivorAI>().healthPoints = collision.gameObject.GetComponent<SurvivorAI>().healthPoints - 20;
+                collision.gameObject.GetComponent<SurvivorAI>().healthPoints = collision.gameObject.GetComponent<SurvivorAI>().healthPoints - attackDamage;
                 isStuned = true;
                 isChasing = false;
+                StartCoroutine(hitStun());
             }
         }
     }
 
+    void OnCollisionStay2D(Collision2D collision) 
+    {
+
+    }
     void OnCollisionExit2D(Collision2D collision) {
         
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-
+        if(DebugMode)
+        {
+            Debug.Log("\n"+other.gameObject.GetInstanceID());
+        }
     }
 
     // On Trigger Stay
     void OnTriggerStay2D(Collider2D other)
     {
+        if(DebugMode)
+        {
+            //Debug.Log("\n"+other.gameObject.tag);
+        }
+
         if (!isStuned)
         {
             bool hasPossibleTarget = other.gameObject.tag == "Survivor" || other.gameObject.tag == "Player";
             if (hasPossibleTarget)
             {
                 bool hasAggro = Vector3.Distance(other.gameObject.transform.position, tr.position) <  aggroDistance;
+                if(DebugMode)
+                {
+                    //Debug.Log("\n"+Vector3.Distance(other.gameObject.transform.position, tr.position));
+                }
                 // Start chasing if found player or survivor
                 if (hasAggro && !isChasing)
                 {
@@ -212,40 +251,46 @@ public class EnemiesAI : MonoBehaviour
                     isChasing = true; 
                 }
 
-                bool hasOtherObjectThanTarget = other.gameObject != target.gameObject;
-                bool otherObjectIsExtremelyClose = Vector3.Distance(other.gameObject.transform.position,tr.position) <  aggresiveAggroDistance;
-                // Change target if someone is in agresive aggro range
-                if (hasOtherObjectThanTarget && isChasing && otherObjectIsExtremelyClose)
+                if(target != null)
                 {
-                    float distanceBetweenPlayerAndCollision = Vector3.Distance(other.gameObject.transform.position,tr.position);
-                    float distanceBetweenPlayerAndTarget = Vector3.Distance(target.position,tr.position);
-                    if (DebugMode)
+                    bool hasOtherObjectThanTarget = other.gameObject != target.gameObject;
+                    bool otherObjectIsExtremelyClose = Vector3.Distance(other.gameObject.transform.position,tr.position) <  aggresiveAggroDistance;
+                    // Change target if someone is in agresive aggro range
+                    if (hasOtherObjectThanTarget && isChasing && otherObjectIsExtremelyClose)
                     {
-                        Debug.Log("\nNowy cel w bardzo bliskiej odległości.");
-                    }
-
-                    if (distanceBetweenPlayerAndCollision < distanceBetweenPlayerAndTarget)
-                    {
+                        float distanceBetweenPlayerAndCollision = Vector3.Distance(other.gameObject.transform.position,tr.position);
+                        float distanceBetweenPlayerAndTarget = Vector3.Distance(target.position,tr.position);
                         if (DebugMode)
                         {
-                            Debug.Log("\nZmieniam target na:"+other.gameObject.tag+"     Odległość od targetu:"+distanceBetweenPlayerAndTarget+"       Odległość do nowego celu: "+distanceBetweenPlayerAndCollision);
+                            Debug.Log("\nNowy cel w bardzo bliskiej odległości.");
                         }
-                        target = other.gameObject.transform;
+
+                        if (distanceBetweenPlayerAndCollision < distanceBetweenPlayerAndTarget)
+                        {
+                            if (DebugMode)
+                            {
+                                Debug.Log("\nZmieniam target na:"+other.gameObject.tag+"     Odległość od targetu:"+distanceBetweenPlayerAndTarget+"       Odległość do nowego celu: "+distanceBetweenPlayerAndCollision);
+                            }
+                            target = other.gameObject.transform;
+                        }
                     }
                 }
 
             } // end of hasPossibleTarget
 
             //Stop chasing if lost sight of target
-            if (other.gameObject == target.gameObject && Vector3.Distance(other.gameObject.transform.position,tr.position) >  aggroDistance)
+            if(target != null)
             {
-                if (DebugMode)
+                if (other.gameObject == target.gameObject && Vector3.Distance(other.gameObject.transform.position,tr.position) >  aggroDistance)
                 {
-                    Debug.Log("\nStracono cel z oczu.");
+                    if (DebugMode)
+                    {
+                        Debug.Log("\nStracono cel z oczu.");
+                    }
+                    isChasing = false;
+                    wanderTarget = target.position;
+                    target = gameObject.transform;
                 }
-                isChasing = false;
-                wanderTarget = target.position;
-                target = gameObject.transform;
             }
 
             // Start grouping enemies
@@ -273,13 +318,10 @@ public class EnemiesAI : MonoBehaviour
     // Random wandering 
     void Wander()
     {
-        if (DebugMode)
-        {
-            Debug.Log("\n------------");
-        }
         while (true)
         {
-            wanderTarget = tr.position + (Random.insideUnitSphere * waderRingRadius);
+            float randomWaderRingRadius = Random.Range(minWaderRingRadius,maxWaderRingRadius);
+            wanderTarget = tr.position + (Random.insideUnitSphere * randomWaderRingRadius);
             wanderTarget[2] = -1;
             if (NavMesh.SamplePosition(wanderTarget, out hit, 1f, NavMesh.AllAreas))
                 {

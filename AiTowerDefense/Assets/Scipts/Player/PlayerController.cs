@@ -14,16 +14,22 @@ public class PlayerController : MonoBehaviour
     Vector3 mousePos;
     private Camera cam;
     Vector2 lookDir;
+    public int healthPoints;
 
     void Start()
     {
         cam = GameObject.Find("MainCamera").GetComponent<Camera>();
+        healthPoints = 100;
     }
     
     void Update()
     {
+        if (healthPoints <= 0)
+        {
+            
+        }
         mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-       
+        Debug.Log(healthPoints);
         MovementInputs();
     }
 
@@ -31,7 +37,7 @@ public class PlayerController : MonoBehaviour
     {
         lookDir.x = mousePos.x-rb2d.position.x;
         lookDir.y = mousePos.y - rb2d.position.y;
-        float angle = Mathf.Atan2(lookDir.y,lookDir.x)*Mathf.Rad2Deg -180f;
+        float angle = Mathf.Atan2(lookDir.y,lookDir.x)*Mathf.Rad2Deg -90f;
         rb2d.rotation = angle;
     }
 

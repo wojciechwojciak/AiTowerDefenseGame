@@ -91,9 +91,10 @@ public class SurvivorAI : MonoBehaviour
             //use traps
                 if (!hasCooldown)
                 {
-                    //create trap on the ground
-                    //StartCoroutine(WaitForCooldownToEnd());
-                }
+                //Instantiate(EnemyPrefab, transform.position, Quaternion.identity);
+                //create trap on the ground
+                //StartCoroutine(WaitForCooldownToEnd());
+                 }
         }
         else
         {   
@@ -137,6 +138,10 @@ public class SurvivorAI : MonoBehaviour
 
     }
     void OnTriggerEnter2D(Collider2D other){
+        if (other.gameObject.tag == "RescuePoint")
+        {
+            Destroy(gameObject);
+        }
         isPlayerNearby = other.gameObject.tag == "Player";
         if(isPlayerNearby){
             isFollowing = true;

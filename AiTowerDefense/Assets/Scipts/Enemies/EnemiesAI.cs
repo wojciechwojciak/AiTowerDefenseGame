@@ -41,7 +41,7 @@ public class EnemiesAI : MonoBehaviour
         agent.updateUpAxis = false;
 
         target = gameObject.transform;
-        wanderTarget = new Vector3(0, 0, 0);
+        wanderTarget = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         tr = GetComponent<Transform>();
         isChasing = false;
         isStuned = false;
@@ -161,7 +161,7 @@ public class EnemiesAI : MonoBehaviour
             // Attack
             if (collision.gameObject.tag == "Player")
             {
-                //collision.gameObject.GetComponent<PlayerController>().healthPoints = collision.gameObject.GetComponent<PlayerController>().healthPoints - 20;
+                collision.gameObject.GetComponent<PlayerController>().healthPoints = collision.gameObject.GetComponent<PlayerController>().healthPoints - 20;
                 isStuned = true;
                 isChasing = false;
             }

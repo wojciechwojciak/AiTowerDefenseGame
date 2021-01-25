@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,21 +17,25 @@ public class PlayerController : MonoBehaviour
     private Camera cam;
     Vector2 lookDir;
     public int healthPoints;
+    public GameObject healtbar;
+    private Text UIText;
 
     void Start()
     {
         cam = GameObject.Find("MainCamera").GetComponent<Camera>();
         healthPoints = 100;
+        UIText = healtbar.GetComponent<Text>();
     }
     
     void Update()
     {
         if (healthPoints <= 0)
         {
-            
+            SceneManager.LoadScene(0);
         }
         mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-        Debug.Log(healthPoints);
+        UIText.text = healthPoints.ToString();
+       // Debug.Log(healthPoints);
         MovementInputs();
     }
 

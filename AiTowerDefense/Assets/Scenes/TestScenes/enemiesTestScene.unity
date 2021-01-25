@@ -864,7 +864,7 @@ PrefabInstance:
     - target: {fileID: 38843395606997071, guid: 1b063dff288ebe649a8b28966fc062f3,
         type: 3}
       propertyPath: m_TagString
-      value: Trap
+      value: Survivor
       objectReference: {fileID: 0}
     - target: {fileID: 1843985080714325977, guid: 1b063dff288ebe649a8b28966fc062f3,
         type: 3}

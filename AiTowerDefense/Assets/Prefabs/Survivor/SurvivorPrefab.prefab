@@ -150,7 +150,7 @@ MonoBehaviour:
   waderRingRadius: 10
   target: {fileID: 0}
   wanderTarget: {x: 0, y: 0, z: 0}
-  detectionDistance: 10
+  detectionDistance: 5
 --- !u!195 &1476216173552323238
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -188,4 +188,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1.9934714
+  m_Radius: 1.206363

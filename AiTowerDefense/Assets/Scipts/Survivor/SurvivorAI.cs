@@ -19,7 +19,7 @@ public class SurvivorAI : MonoBehaviour
     [SerializeField] private float waderRingRadius = 10;
     [SerializeField] public Transform target;
     [SerializeField] private Vector3 wanderTarget;
-    [SerializeField] private float detectionDistance = 10;
+    [SerializeField] private float detectionDistance = 5;
     //[SerializeField] private float alarmDistance = 20;
     //[SerializeField] private float attackDamage = 20;
     // Start is called before the first frame update
@@ -71,10 +71,8 @@ public class SurvivorAI : MonoBehaviour
         }
         
         // Follow player if in range
-        if (isPlayerNearby)
+        if (isFollowing)
         {
-            isRunning = false;
-            isFollowing = true;
             agent.SetDestination(target.position);
             if(isZombieNearby)
             {
@@ -87,10 +85,9 @@ public class SurvivorAI : MonoBehaviour
             }
         }
         // Run away from zombie if in range
-        else if (isZombieNearby)
+        else if (isRunning)
         {
-            isFollowing = false;
-            isRunning = true;
+            agent.SetDestination(wanderTarget);
             //use traps
                 if (!hasCooldown)
                 {
@@ -140,18 +137,43 @@ public class SurvivorAI : MonoBehaviour
 
     }
     void OnTriggerEnter2D(Collider2D other){
+        isPlayerNearby = other.gameObject.tag == "Player";
+        if(isPlayerNearby){
+            isFollowing = true;
+            isRunning = false;
+            target = other.gameObject.transform;
+        }
 
     }
 
     void OnTriggerStay2D(Collider2D other){
-        bool hasPossibleTarget = other.gameObject.tag == "Enemy" || other.gameObject.tag == "Player";
-        if(hasPossibleTarget){
-
+        isZombieNearby = other.gameObject.tag == "Enemy";
+        if(!isPlayerNearby && isZombieNearby){
+            isFollowing = false;
+            isRunning = true;
+            Vector3 dir = other.gameObject.transform.position - target.position;
+            wanderTarget = target.position - dir;
+            while(true){
+                if (NavMesh.SamplePosition(wanderTarget, out hit, 1f, NavMesh.AllAreas)){
+                    break;
+                }
+                wanderTarget = tr.position + (Random.insideUnitSphere * waderRingRadius);
+                wanderTarget[2] = -1;
+            }
         }
     }
     void OnTriggerExit2D(Collider2D other) 
     {
-
+        bool lostFollowingTarget = other.gameObject.tag == "Player";
+        bool lostZombie = other.gameObject.tag =="Enemy";
+        if(lostFollowingTarget && !isZombieNearby){
+            isFollowing = false;
+            wanderTarget = target.position;
+            target = gameObject.transform;
+        }
+        else if(lostZombie && !isZombieNearby){
+            isRunning = false;
+        }
     }
     void Wander()
     {

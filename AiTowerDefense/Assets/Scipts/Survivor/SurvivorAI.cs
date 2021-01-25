@@ -42,7 +42,7 @@ public class SurvivorAI : MonoBehaviour
         agent.updateUpAxis = false;
 
         target = gameObject.transform;
-        wanderTarget = new Vector3(0, 0, 0);
+        wanderTarget = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         tr = GetComponent<Transform>();
         isRunning = false;
         isFollowing = false;
@@ -69,7 +69,6 @@ public class SurvivorAI : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        
         // Follow player if in range
         if (isFollowing)
         {

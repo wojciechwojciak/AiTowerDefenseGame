@@ -28,6 +28,6 @@ public class SpawnZombie : MonoBehaviour
             }
            
         }
-        Debug.Log(zombieSpawnL);
+        //Debug.Log(zombieSpawnL);
     }
 }

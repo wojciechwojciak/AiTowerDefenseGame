@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private Camera cam;
     Vector2 lookDir;
     public int healthPoints;
+    [SerializeField] private bool DebugMode = false;
 
     void Start()
     {
@@ -29,7 +30,10 @@ public class PlayerController : MonoBehaviour
             
         }
         mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-        Debug.Log(healthPoints);
+        if(DebugMode)
+        {
+            Debug.Log(healthPoints);
+        }
         MovementInputs();
     }
 

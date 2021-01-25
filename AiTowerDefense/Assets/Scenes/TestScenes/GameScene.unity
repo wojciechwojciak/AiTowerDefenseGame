@@ -2665,6 +2665,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SurvivorPrefab (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 38843395606997071, guid: 1b063dff288ebe649a8b28966fc062f3,
+        type: 3}
+      propertyPath: m_TagString
+      value: Survivor
+      objectReference: {fileID: 0}
     - target: {fileID: 1843985080714325977, guid: 1b063dff288ebe649a8b28966fc062f3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2739,6 +2744,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SurvivorPrefab (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 38843395606997071, guid: 1b063dff288ebe649a8b28966fc062f3,
+        type: 3}
+      propertyPath: m_TagString
+      value: Survivor
       objectReference: {fileID: 0}
     - target: {fileID: 1843985080714325977, guid: 1b063dff288ebe649a8b28966fc062f3,
         type: 3}
@@ -3447,6 +3457,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SurvivorPrefab (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 38843395606997071, guid: 1b063dff288ebe649a8b28966fc062f3,
+        type: 3}
+      propertyPath: m_TagString
+      value: Survivor
+      objectReference: {fileID: 0}
     - target: {fileID: 1843985080714325977, guid: 1b063dff288ebe649a8b28966fc062f3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3726,6 +3741,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SurvivorPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 38843395606997071, guid: 1b063dff288ebe649a8b28966fc062f3,
+        type: 3}
+      propertyPath: m_TagString
+      value: Survivor
       objectReference: {fileID: 0}
     - target: {fileID: 1843985080714325977, guid: 1b063dff288ebe649a8b28966fc062f3,
         type: 3}
@@ -4150,6 +4170,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SurvivorPrefab (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 38843395606997071, guid: 1b063dff288ebe649a8b28966fc062f3,
+        type: 3}
+      propertyPath: m_TagString
+      value: Survivor
+      objectReference: {fileID: 0}
     - target: {fileID: 1843985080714325977, guid: 1b063dff288ebe649a8b28966fc062f3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4362,6 +4387,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SurvivorPrefab (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 38843395606997071, guid: 1b063dff288ebe649a8b28966fc062f3,
+        type: 3}
+      propertyPath: m_TagString
+      value: Survivor
+      objectReference: {fileID: 0}
     - target: {fileID: 1843985080714325977, guid: 1b063dff288ebe649a8b28966fc062f3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4493,6 +4523,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SurvivorPrefab (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 38843395606997071, guid: 1b063dff288ebe649a8b28966fc062f3,
+        type: 3}
+      propertyPath: m_TagString
+      value: Survivor
       objectReference: {fileID: 0}
     - target: {fileID: 1843985080714325977, guid: 1b063dff288ebe649a8b28966fc062f3,
         type: 3}
@@ -6318,6 +6353,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SurvivorPrefab (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 38843395606997071, guid: 1b063dff288ebe649a8b28966fc062f3,
+        type: 3}
+      propertyPath: m_TagString
+      value: Survivor
+      objectReference: {fileID: 0}
     - target: {fileID: 1843985080714325977, guid: 1b063dff288ebe649a8b28966fc062f3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6782,6 +6822,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SurvivorPrefab (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 38843395606997071, guid: 1b063dff288ebe649a8b28966fc062f3,
+        type: 3}
+      propertyPath: m_TagString
+      value: Survivor
+      objectReference: {fileID: 0}
     - target: {fileID: 1843985080714325977, guid: 1b063dff288ebe649a8b28966fc062f3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7216,6 +7261,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SurvivorPrefab (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 38843395606997071, guid: 1b063dff288ebe649a8b28966fc062f3,
+        type: 3}
+      propertyPath: m_TagString
+      value: Survivor
+      objectReference: {fileID: 0}
     - target: {fileID: 1843985080714325977, guid: 1b063dff288ebe649a8b28966fc062f3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7347,6 +7397,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SurvivorPrefab (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 38843395606997071, guid: 1b063dff288ebe649a8b28966fc062f3,
+        type: 3}
+      propertyPath: m_TagString
+      value: Survivor
       objectReference: {fileID: 0}
     - target: {fileID: 1843985080714325977, guid: 1b063dff288ebe649a8b28966fc062f3,
         type: 3}
@@ -8292,6 +8347,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SurvivorPrefab (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 38843395606997071, guid: 1b063dff288ebe649a8b28966fc062f3,
+        type: 3}
+      propertyPath: m_TagString
+      value: Survivor
+      objectReference: {fileID: 0}
     - target: {fileID: 1843985080714325977, guid: 1b063dff288ebe649a8b28966fc062f3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8840,6 +8900,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SurvivorPrefab (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 38843395606997071, guid: 1b063dff288ebe649a8b28966fc062f3,
+        type: 3}
+      propertyPath: m_TagString
+      value: Survivor
+      objectReference: {fileID: 0}
     - target: {fileID: 1843985080714325977, guid: 1b063dff288ebe649a8b28966fc062f3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8971,6 +9036,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SurvivorPrefab (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 38843395606997071, guid: 1b063dff288ebe649a8b28966fc062f3,
+        type: 3}
+      propertyPath: m_TagString
+      value: Survivor
       objectReference: {fileID: 0}
     - target: {fileID: 1843985080714325977, guid: 1b063dff288ebe649a8b28966fc062f3,
         type: 3}
@@ -10119,6 +10189,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SurvivorPrefab (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 38843395606997071, guid: 1b063dff288ebe649a8b28966fc062f3,
+        type: 3}
+      propertyPath: m_TagString
+      value: Survivor
+      objectReference: {fileID: 0}
     - target: {fileID: 1843985080714325977, guid: 1b063dff288ebe649a8b28966fc062f3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10193,6 +10268,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SurvivorPrefab (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 38843395606997071, guid: 1b063dff288ebe649a8b28966fc062f3,
+        type: 3}
+      propertyPath: m_TagString
+      value: Survivor
       objectReference: {fileID: 0}
     - target: {fileID: 1843985080714325977, guid: 1b063dff288ebe649a8b28966fc062f3,
         type: 3}

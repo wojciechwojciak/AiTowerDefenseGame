@@ -66,6 +66,12 @@ public class EnemiesAI : MonoBehaviour
             Destroy(gameObject);
         }
 
+        if (target == null)
+        {
+            isChasing = false;
+            target = gameObject.transform;
+        }
+
         //Stun time
         if (isStuned)
         {
@@ -162,7 +168,7 @@ public class EnemiesAI : MonoBehaviour
 
             if (collision.gameObject.tag == "Survivor")
             {
-                //collision.gameObject.GetComponent<SurvaviorAI>().healthPoints = collision.gameObject.GetComponent<SurvaviorAI>().healthPoints - 20;
+                collision.gameObject.GetComponent<SurvivorAI>().healthPoints = collision.gameObject.GetComponent<SurvivorAI>().healthPoints - 20;
                 isStuned = true;
                 isChasing = false;
             }

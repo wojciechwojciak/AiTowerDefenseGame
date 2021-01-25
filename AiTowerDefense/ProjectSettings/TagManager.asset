@@ -8,6 +8,8 @@ TagManager:
   - Survivor
   - Wall
   - Trap
+  - Bullet
+  - RescuePoint
   layers:
   - Default
   - TransparentFX

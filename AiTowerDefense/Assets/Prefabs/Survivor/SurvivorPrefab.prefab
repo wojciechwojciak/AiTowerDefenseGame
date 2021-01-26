@@ -125,11 +125,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthPoints: 0
+  survivorEscaped: {fileID: 0}
+  survivorRemaining: {fileID: 0}
+  BombWeapon: {fileID: 3136718865751251797, guid: 62364f9a76893234baab968d26e76a52,
+    type: 3}
   DebugMode: 0
-  waderRingRadius: 10
+  maxWanderRingRadius: 30
+  minWanderRingRadius: 10
   target: {fileID: 0}
   wanderTarget: {x: 0, y: 0, z: 0}
-  detectionDistance: 5
+  detectionDistance: 10
 --- !u!195 &1476216173552323238
 NavMeshAgent:
   m_ObjectHideFlags: 0

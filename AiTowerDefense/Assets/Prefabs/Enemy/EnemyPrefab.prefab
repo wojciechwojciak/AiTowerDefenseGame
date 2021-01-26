@@ -164,13 +164,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthPoints: 0
   DebugMode: 0
+  hitEffect: {fileID: 8667042659344826630, guid: 1e55e5b943989fd4f9ad5c12ce285b58,
+    type: 3}
   maxWaderRingRadius: 100
   minWaderRingRadius: 15
   target: {fileID: 0}
   wanderTarget: {x: 0, y: 0, z: 0}
-  aggresiveAggroDistance: 5
-  aggroDistance: 10
-  alarmDistance: 20
+  aggresiveAggroDistance: 4
+  aggroDistance: 8
+  alarmDistance: 15
   attackDamage: 20
   bulletDamage: 20
   trapDamage: 20

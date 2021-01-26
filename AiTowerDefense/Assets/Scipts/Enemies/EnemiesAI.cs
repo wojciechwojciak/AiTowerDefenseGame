@@ -16,6 +16,7 @@ public class EnemiesAI : MonoBehaviour
     private float agentNormalSpeed = 3.5f;
     private float agentchasingSpeed = 4f;
     private NavMeshHit hit;
+    public GameObject hitEffect;
 
 
     [SerializeField] private float maxWaderRingRadius = 100;
@@ -160,6 +161,8 @@ public class EnemiesAI : MonoBehaviour
             healthPoints -= trapDamage;
             isStuned = true;
             isChasing = false;
+            GameObject effect = Instantiate(hitEffect, transform.position, Quaternion.identity);
+            Destroy(effect, 0.5f);
             Destroy(collision.gameObject);
         }
 

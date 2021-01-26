@@ -17,6 +17,7 @@ public class EnemiesAI : MonoBehaviour
     private float agentchasingSpeed = 4f;
     private NavMeshHit hit;
     public GameObject hitEffect;
+  
 
 
     [SerializeField] private float maxWaderRingRadius = 100;
@@ -145,9 +146,10 @@ public class EnemiesAI : MonoBehaviour
             {
                 Debug.Log("\nWykryta kolizja z pociskiem.");
             }
-
+            
             //HP decrecement
             healthPoints -= bulletDamage;
+            
         }
 
         if (collision.gameObject.tag == "Trap")
@@ -198,6 +200,7 @@ public class EnemiesAI : MonoBehaviour
                 isChasing = false;
                 StartCoroutine(hitStun());
             }
+           
         }
     }
 

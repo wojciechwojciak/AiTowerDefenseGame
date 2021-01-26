@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SurvivorAI : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class SurvivorAI : MonoBehaviour
     private NavMeshAgent agent;
     private float agentNormalSpeed = 3.0f;
     private NavMeshHit hit;
+    private int escaped;
+    private int remaining;
 
     [SerializeField] private float maxWanderRingRadius = 50;
     [SerializeField] private float minWanderRingRadius = 10;
@@ -69,14 +72,21 @@ public class SurvivorAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         //  Destroy if HP <= 0
         if (healthPoints <= 0)
         {
-            int remaining = int.Parse(survivorRemaining.text);
+            remaining = int.Parse(survivorRemaining.text);
             remaining--;
             survivorRemaining.text = (remaining.ToString());
             Destroy(gameObject);
             //dekrementacja ilości
+        }
+        if ((escaped > 0) && (remaining == 0))
+        {
+
+            Debug.Log("YOU WIN!");
+            SceneManager.LoadScene(0);
         }
         // Follow player if in range
         if (isFollowing)
@@ -138,10 +148,10 @@ public class SurvivorAI : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other){
         if (other.gameObject.tag == "RescuePoint")
         {
-            int escaped = int.Parse(survivorEscaped.text);
+            escaped = int.Parse(survivorEscaped.text);
             escaped++;
             survivorEscaped.text = (escaped.ToString());
-            int remaining = int.Parse(survivorRemaining.text);
+            remaining = int.Parse(survivorRemaining.text);
             remaining--;
             survivorRemaining.text = (remaining.ToString());
             Destroy(gameObject);

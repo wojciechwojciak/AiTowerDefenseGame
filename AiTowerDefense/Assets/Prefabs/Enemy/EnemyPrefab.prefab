@@ -166,6 +166,8 @@ MonoBehaviour:
   DebugMode: 0
   hitEffect: {fileID: 8667042659344826630, guid: 1e55e5b943989fd4f9ad5c12ce285b58,
     type: 3}
+  damageSound: {fileID: 7846203312254727586, guid: bfdbd1ec7403e5a49bd654ae12011a89,
+    type: 3}
   maxWaderRingRadius: 100
   minWaderRingRadius: 15
   target: {fileID: 0}

@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class SurvivorAI : MonoBehaviour
 {
     // Public variables
     public int healthPoints;
+    public Text survivorEscaped;
+    public Text survivorRemaining;
+    public GameObject BombWeapon;
 
     // Private variables
     [SerializeField] private bool DebugMode = false;
@@ -16,7 +20,8 @@ public class SurvivorAI : MonoBehaviour
     private float agentNormalSpeed = 3.0f;
     private NavMeshHit hit;
 
-    [SerializeField] private float waderRingRadius = 10;
+    [SerializeField] private float maxWanderRingRadius = 50;
+    [SerializeField] private float minWanderRingRadius = 10;
     [SerializeField] public Transform target;
     [SerializeField] private Vector3 wanderTarget;
     [SerializeField] private float detectionDistance = 5;
@@ -24,16 +29,19 @@ public class SurvivorAI : MonoBehaviour
     //[SerializeField] private float attackDamage = 20;
     // Start is called before the first frame update
 
-    private bool isRunning;
-    private bool isFollowing;
-    private bool isPlayerNearby;
-    private bool isZombieNearby;
-    private bool hasCooldown;
-    private float trapCooldown = 10f;
+    [SerializeField] private bool isRunning;
+    [SerializeField] private bool isFollowing;
+    [SerializeField] private bool isPlayerNearby;
+    [SerializeField] private bool isZombieNearby;
+    [SerializeField] private bool hasCooldown;
+    private float trapCooldown = 15f;
 
     // Start is called before the first frame update
     void Start()
     {
+        survivorEscaped = GameObject.Find("SurvivorEtext").GetComponent<Text>();
+        survivorRemaining = GameObject.Find("Survivortext").GetComponent<Text>();
+        
         cirCol = GetComponent<CircleCollider2D>();
         cirCol.radius = detectionDistance;
 
@@ -52,12 +60,9 @@ public class SurvivorAI : MonoBehaviour
         healthPoints = 100;
     }
 
-    IEnumerator CooldownFortrapPlacing(){
+    IEnumerator WaitForCooldownToEnd(){
         //wait 10 sec
-        agent.speed = 0;
-        agent.velocity = Vector3.zero;
         yield return new WaitForSeconds(trapCooldown);
-        agent.speed = agentNormalSpeed;
         hasCooldown = false;
     }
 
@@ -67,7 +72,11 @@ public class SurvivorAI : MonoBehaviour
         //  Destroy if HP <= 0
         if (healthPoints <= 0)
         {
+            int remaining = int.Parse(survivorRemaining.text);
+            remaining--;
+            survivorRemaining.text = (remaining.ToString());
             Destroy(gameObject);
+            //dekrementacja ilości
         }
         // Follow player if in range
         if (isFollowing)
@@ -79,7 +88,9 @@ public class SurvivorAI : MonoBehaviour
                 if (!hasCooldown)
                 {
                     //create trap on the ground
-                    //StartCoroutine(WaitForCooldownToEnd());
+                    Instantiate(BombWeapon, transform.position, Quaternion.identity);
+                    hasCooldown = true;
+                    StartCoroutine(WaitForCooldownToEnd());
                 }
             }
         }
@@ -90,9 +101,9 @@ public class SurvivorAI : MonoBehaviour
             //use traps
                 if (!hasCooldown)
                 {
-                //Instantiate(EnemyPrefab, transform.position, Quaternion.identity);
-                //create trap on the ground
-                //StartCoroutine(WaitForCooldownToEnd());
+                    Instantiate(BombWeapon, transform.position, Quaternion.identity);
+                    hasCooldown = true;
+                    StartCoroutine(WaitForCooldownToEnd());
                  }
         }
         else
@@ -120,18 +131,6 @@ public class SurvivorAI : MonoBehaviour
             }
             Wander();
         }
-
-        // Atacked by enemy
-        if (collision.gameObject.tag == "Enemy")
-        {
-            if (DebugMode)
-            {
-                if (collision.gameObject.tag == "Enemy")
-                {
-                    Debug.Log("\nWykryta kolizja z zombie.");
-                }
-            }
-        }
     }
     void OnCollisionExit2D(Collision2D collision) {
 
@@ -139,6 +138,12 @@ public class SurvivorAI : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other){
         if (other.gameObject.tag == "RescuePoint")
         {
+            int escaped = int.Parse(survivorEscaped.text);
+            escaped++;
+            survivorEscaped.text = (escaped.ToString());
+            int remaining = int.Parse(survivorRemaining.text);
+            remaining--;
+            survivorRemaining.text = (remaining.ToString());
             Destroy(gameObject);
         }
         isPlayerNearby = other.gameObject.tag == "Player";
@@ -151,18 +156,28 @@ public class SurvivorAI : MonoBehaviour
     }
 
     void OnTriggerStay2D(Collider2D other){
-        isZombieNearby = other.gameObject.tag == "Enemy";
-        if(!isPlayerNearby && isZombieNearby){
-            isFollowing = false;
-            isRunning = true;
-            Vector3 dir = other.gameObject.transform.position - target.position;
-            wanderTarget = target.position - dir;
-            while(true){
-                if (NavMesh.SamplePosition(wanderTarget, out hit, 1f, NavMesh.AllAreas)){
-                    break;
+        if(Vector3.Distance(other.gameObject.transform.position, tr.position) <  detectionDistance){
+            isZombieNearby = other.gameObject.tag == "Enemy";
+            if(!isPlayerNearby && isZombieNearby){
+                isFollowing = false;
+                isRunning = true;
+                Vector3 dir = other.gameObject.transform.position - target.position;
+                wanderTarget = target.position - dir;
+                while(true){
+                    if (NavMesh.SamplePosition(wanderTarget, out hit, 1f, NavMesh.AllAreas)){
+                        break;
+                    }
+                    float randomWaderRingRadius = Random.Range(minWanderRingRadius,maxWanderRingRadius);
+                    wanderTarget = tr.position + (Random.insideUnitSphere * randomWaderRingRadius);
+                    wanderTarget[2] = -1;
                 }
-                wanderTarget = tr.position + (Random.insideUnitSphere * waderRingRadius);
-                wanderTarget[2] = -1;
+            }
+        }
+        else if(Vector3.Distance(other.gameObject.transform.position, tr.position) >  detectionDistance){
+            bool lostZombie = other.gameObject.tag == "Enemy";
+            if(lostZombie){
+                isRunning = false;
+                isZombieNearby = false;
             }
         }
     }
@@ -170,12 +185,13 @@ public class SurvivorAI : MonoBehaviour
     {
         bool lostFollowingTarget = other.gameObject.tag == "Player";
         bool lostZombie = other.gameObject.tag =="Enemy";
-        if(lostFollowingTarget && !isZombieNearby){
+        if(lostFollowingTarget){
             isFollowing = false;
             wanderTarget = target.position;
             target = gameObject.transform;
         }
         else if(lostZombie && !isZombieNearby){
+            isZombieNearby = false;
             isRunning = false;
         }
     }
@@ -187,7 +203,8 @@ public class SurvivorAI : MonoBehaviour
         }
         while (true)
         {
-            wanderTarget = tr.position + (Random.insideUnitSphere * waderRingRadius);
+            float randomWaderRingRadius = Random.Range(minWanderRingRadius,maxWanderRingRadius);
+            wanderTarget = tr.position + (Random.insideUnitSphere * randomWaderRingRadius);
             wanderTarget[2] = -1;
             if (NavMesh.SamplePosition(wanderTarget, out hit, 1f, NavMesh.AllAreas))
                 {

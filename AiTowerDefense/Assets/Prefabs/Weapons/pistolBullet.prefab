@@ -145,3 +145,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitEffect: {fileID: 5856271204578112427, guid: 6d94c11e945aaf14f9c789b56efd32a9,
     type: 3}
+  deathSound: {fileID: 8300000, guid: 87d17d6cd5ed46847a0563d89e0396f3, type: 3}

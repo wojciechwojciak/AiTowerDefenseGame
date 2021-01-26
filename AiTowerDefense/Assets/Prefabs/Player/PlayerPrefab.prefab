@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7138864215183641439}
   - component: {fileID: 1998653923400637864}
   - component: {fileID: 961737014098405030}
+  - component: {fileID: 8448400385328019364}
   m_Layer: 0
   m_Name: PlayerPrefab
   m_TagString: Player
@@ -100,6 +101,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 5
   rb2d: {fileID: 1998653923400637864}
+  healthPoints: 0
+  healtbar: {fileID: 0}
 --- !u!50 &1998653923400637864
 Rigidbody2D:
   serializedVersion: 4
@@ -137,6 +140,14 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.64
+--- !u!81 &8448400385328019364
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228948743590824982}
+  m_Enabled: 1
 --- !u!1 &5625131443052850362
 GameObject:
   m_ObjectHideFlags: 0
